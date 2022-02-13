@@ -1,9 +1,7 @@
-score_1 = int(input())
-score_2 = int(input())
-score_3 = int(input())
-score_mean = (score_1 + score_2 + score_3) / 3
-print(score_mean)
-if score_mean >= 60:
-    print("Congratulations, you are accepted!")
-else:
-    print("We regret to inform you that we will not be able to offer you admission.")
+applicants_num = int(input())
+accept_num = int(input())
+applicants = [input().split() for x in range(applicants_num)]
+applicants.sort(key=lambda x: (-float(x[2]), x[0], x[1]))
+print("Successful applicants:")
+for x in range(accept_num):
+    print(f"{applicants[x][0]} {applicants[x][1]}")
