@@ -100,7 +100,7 @@ Nastassja Trustram 60 49 82 68 Mathematics Engineering Physics"""
 
 class University:
     departments = ["Biotech", "Chemistry", "Engineering", "Mathematics", "Physics"]
-    dpt_finals_position = {"Physics": 2, "Chemistry": 3, "Mathematics": 4, "Engineering": 5, "Biotech": 3}
+    dpt_finals_position = {"Physics": (2, 4), "Chemistry": (3, 3), "Mathematics": (4, 4), "Engineering": (4, 5), "Biotech": (2, 3)}
 
     def __init__(self, accept_num):
         self.accept_num = accept_num
@@ -121,8 +121,9 @@ class University:
             self.applicants.setdefault(apt[rank + 6], []).append(apt)
         # print(self.applicants)
         for dpt in self.applicants:
-            i = self.dpt_finals_position[dpt]
-            self.applicants[dpt].sort(key=lambda x: (-float(x[i]), x[0], x[1]))
+            i1 = self.dpt_finals_position[dpt][0]
+            i2 = self.dpt_finals_position[dpt][1]
+            self.applicants[dpt].sort(key=lambda x: (-(float(x[i1]) + float(x[i2])) / 2, x[0], x[1]))
 
     def accept_students(self):
         for dpt in self.applicants:
@@ -136,11 +137,14 @@ class University:
 
     def display_admission(self):
         for dpt in self.departments:
-            i = self.dpt_finals_position[dpt]
-            self.departments_students[dpt].sort(key=lambda x: (-float(x[i]), x[0], x[1]))
+            i1 = self.dpt_finals_position[dpt][0]
+            i2 = self.dpt_finals_position[dpt][1]
+            self.departments_students[dpt].sort(key=lambda x: (-(float(x[i1]) + float(x[i2])) / 2, x[0], x[1]))
             print(dpt)
-            for student in self.departments_students[dpt]:
-                print(f"{student[0]} {student[1]} {student[i]}")
+            with open(f"{dpt}.txt", "w") as admission_list:
+                for student in self.departments_students[dpt]:
+                    print(f"{student[0]} {student[1]} {(float(student[i1]) + float(student[i2])) / 2}\n", file=admission_list)
+                    print(f"{student[0]} {student[1]} {(float(student[i1]) + float(student[i2])) / 2}")
 
 
 university = University(int(input()))
