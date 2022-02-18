@@ -118,12 +118,12 @@ class University:
     def get_applicants_list(self, rank):
         self.applicants = {}
         for apt in self.applicants_total:
-            self.applicants.setdefault(apt[rank + 6], []).append(apt)
+            self.applicants.setdefault(apt[rank + 7], []).append(apt)
         # print(self.applicants)
         for dpt in self.applicants:
             i1 = self.dpt_finals_position[dpt][0]
             i2 = self.dpt_finals_position[dpt][1]
-            self.applicants[dpt].sort(key=lambda x: (-(float(x[i1]) + float(x[i2])) / 2, x[0], x[1]))
+            self.applicants[dpt].sort(key=lambda x: (-max((float(x[i1]) + float(x[i2])) / 2, float(x[6])), x[0], x[1]))
 
     def accept_students(self):
         for dpt in self.applicants:
@@ -139,12 +139,12 @@ class University:
         for dpt in self.departments:
             i1 = self.dpt_finals_position[dpt][0]
             i2 = self.dpt_finals_position[dpt][1]
-            self.departments_students[dpt].sort(key=lambda x: (-(float(x[i1]) + float(x[i2])) / 2, x[0], x[1]))
+            self.departments_students[dpt].sort(key=lambda x: (-max((float(x[i1]) + float(x[i2])) / 2, float(x[6])), x[0], x[1]))
             print(dpt)
             with open(f"{dpt}.txt", "w") as admission_list:
                 for student in self.departments_students[dpt]:
-                    print(f"{student[0]} {student[1]} {(float(student[i1]) + float(student[i2])) / 2}\n", file=admission_list)
-                    print(f"{student[0]} {student[1]} {(float(student[i1]) + float(student[i2])) / 2}")
+                    print(f"{student[0]} {student[1]} {max((float(student[i1]) + float(student[i2])) / 2, float(student[6]))}\n", file=admission_list)
+                    print(f"{student[0]} {student[1]} {max((float(student[i1]) + float(student[i2])) / 2, float(student[6]))}")
 
 
 university = University(int(input()))
